@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tsucho-lab(通帳ラボ) — 住宅ローン・マイカーローンの無料シミュレーター</title>
+<meta name="description" content="tsucho-labは、住宅ローンやマイカーローンなど「お金の借り方」を無料でシミュレーションできるツールを集めたサイトです。">
+<link rel="canonical" href="https://tsucho-lab.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="tsucho-lab(通帳ラボ) — 住宅ローン・マイカーローンの無料シミュレーター">
+<meta property="og:description" content="住宅ローンやマイカーローンなど「お金の借り方」を無料でシミュレーションできるツールを集めたサイトです。">
+<meta property="og:url" content="https://tsucho-lab.com/">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://tsucho-lab.com/og-index.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEEFEA;
+    --paper-deep: #E4E6DE;
+    --line: #CCCFC5;
+    --ink: #2B2B26;
+    --ink-soft: #63645A;
+    --white: #FBFCF9;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
+    line-height: 1.7;
+  }
+  .wrap{ max-width: 720px; margin: 0 auto; padding: 40px 18px 80px; }
+
+  .hero{ text-align:center; margin-bottom: 36px; }
+  .hero .eyebrow{
+    font-family:"Roboto Mono", monospace; font-size: 11px; letter-spacing: .2em;
+    color: var(--ink-soft); text-transform: uppercase;
+  }
+  .hero h1{
+    font-family:"Zen Old Mincho", serif; font-weight: 700;
+    font-size: clamp(26px, 6vw, 34px); margin: 10px 0 12px; letter-spacing: .04em;
+  }
+  .hero p{ font-size: 14px; color: var(--ink-soft); max-width: 480px; margin: 0 auto; line-height: 1.9; }
+
+  .tool-list{ display:flex; flex-direction: column; gap: 18px; }
+  .tool-card{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .tool-card:hover{ transform: translateY(-2px); box-shadow: 0 8px 20px rgba(40,40,30,0.08); }
+  .tool-card::before{
+    content:"";
+    position:absolute; left:0; top:0; bottom:0; width: 6px;
+  }
+  .tool-card.housing::before{ background: linear-gradient(180deg, #2C4A3C, #A9863F); }
+  .tool-card.car::before{ background: linear-gradient(180deg, #22314A, #C1652F); }
+  .tool-card .kicker{
+    font-family:"Roboto Mono", monospace; font-size: 10.5px; letter-spacing: .12em;
+    color: var(--ink-soft); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .tool-card h2{
+    font-family:"Zen Old Mincho", serif; font-size: 20px; margin: 0 0 8px; color: var(--ink);
+  }
+  .tool-card p{ font-size: 13.5px; color: var(--ink-soft); margin: 0 0 12px; line-height: 1.8; }
+  .tool-card .enter{
+    font-size: 12.5px; font-weight: 700; display:inline-flex; align-items:center; gap: 4px;
+  }
+  .tool-card.housing .enter{ color: #2C4A3C; }
+  .tool-card.car .enter{ color: #22314A; }
+
+  .tool-card.upcoming{
+    opacity: .6;
+    cursor: default;
+  }
+  .tool-card.upcoming::before{ background: var(--line); }
+  .tool-card.upcoming:hover{ transform:none; box-shadow:none; }
+  .tool-card.upcoming .enter{ color: var(--ink-soft); }
+
+  .about-note{
+    margin-top: 40px; padding: 18px 20px;
+    background: var(--white); border: 1px dashed var(--line); border-radius: 2px;
+    font-size: 12.5px; color: var(--ink-soft); line-height: 1.9;
+  }
+  .about-note b{ color: var(--ink); }
+
+  .site-footer{ margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 11px; color: var(--ink-soft); line-height: 1.8; text-align:center; }
+  .site-footer a{ color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">tsucho-lab</div>
+    <h1>通帳ラボ</h1>
+    <p>お金を借りるときの「どっちが得か」を、通帳の形でシミュレーションするツールを作っています。まずは気になるツールを選んでください。</p>
+  </div>
+
+  <div class="tool-list">
+
+    <a class="tool-card housing" href="/housing-loan.html">
+      <div class="kicker">Housing Loan</div>
+      <h2>住宅ローン通帳</h2>
+      <p>変動金利と固定金利、利上げが起きたらどちらが得か試算。5年ルール・125%ルール、フラット35にも対応し、主要銀行6行の金利も比較できます。</p>
+      <span class="enter">シミュレーターを開く →</span>
+    </a>
+
+    <a class="tool-card car" href="/mycar-loan.html">
+      <div class="kicker">Car Loan</div>
+      <h2>マイカーローン通帳</h2>
+      <p>銀行ローン・ディーラーローン・残クレ(残価設定型ローン)を、総支払額で比較。「返却」と「買取」で総額がどう変わるかも試算できます。</p>
+      <span class="enter">シミュレーターを開く →</span>
+    </a>
+
+    <div class="tool-card upcoming">
+      <div class="kicker">Coming soon</div>
+      <h2>その他のローン通帳</h2>
+      <p>教育ローンやカードローンなど、他のローンの比較ツールも今後追加していく予定です。</p>
+      <span class="enter">準備中</span>
+    </div>
+
+  </div>
+
+  <div class="about-note">
+    <b>tsucho-labについて</b><br>
+    個人が運営する、お金にまつわる無料の計算ツールサイトです。銀行の公式シミュレーターではできない「複数の選択肢を横並びで比較する」ことに焦点を当てています。掲載内容は投資助言や金融アドバイスを目的としたものではありません。
+  </div>
+
+  <div class="site-footer">
+    <a href="/privacy.html">プライバシーポリシー・お問い合わせ</a><br>
+    © 2026 tsucho-lab
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>銀行ローン・ディーラーローン・残クレ、結局どれが得?マイカーローン比較シミュレーター</title>
+<meta name="description" content="マイカーローンの銀行ローン・ディーラーローン・残価設定型ローン(残クレ)を無料でシミュレーション比較。残クレの「返却」「買取」による総支払額の違いも試算できます。">
+<link rel="canonical" href="https://tsucho-lab.com/mycar-loan.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="銀行ローン・ディーラーローン・残クレ、結局どれが得?マイカーローン比較シミュレーター">
+<meta property="og:description" content="マイカーローンの銀行ローン・ディーラーローン・残価設定型ローン(残クレ)を無料でシミュレーション比較できます。">
+<meta property="og:url" content="https://tsucho-lab.com/mycar-loan.html">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://tsucho-lab.com/og-mycar-loan.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "銀行ローン・ディーラーローン・残クレ、結局どれが一番安いですか?",
+      "acceptedAnswer": { "@type": "Answer", "text": "一般的には、総支払額だけを見れば銀行のマイカーローンが最も安くなりやすい傾向があります。ディーラーローンはキャンペーン金利が適用される場合を除き金利が高めです。残クレは月々の負担は軽くなりますが、契約満了時に車を買い取る場合は総支払額が最も高くなるケースが多いです。ただし審査のスピードや必要書類、手元に残るのは現金かローンかといった条件も含めて、総合的に判断する必要があります。" }
+    },
+    {
+      "@type": "Question",
+      "name": "残クレで「返却」を選べば一番お得ということですか?",
+      "acceptedAnswer": { "@type": "Answer", "text": "総支払額の数字だけを見るとそう見えますが、正確な比較ではありません。返却した場合、手元には車という資産が一切残らないためです。銀行ローンやディーラーローンで完済すれば車は自分のものになり、売却すればいくらかの現金化もできます。単純な支払額の比較ではなく、「手元に何が残るか」まで含めて考える必要があります。" }
+    },
+    {
+      "@type": "Question",
+      "name": "残価設定ローンの残価はどう決まりますか?",
+      "acceptedAnswer": { "@type": "Answer", "text": "残価は、契約満了時点でのその車の予想下取り価格を、メーカーやディーラーが車種・グレードごとに設定します。一般的に車両価格の30〜50%程度になることが多いですが、車種や契約年数によって幅があります。正確な数値は契約するディーラーに確認が必要です。" }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EDF1F5;
+    --paper-deep: #E1E7EE;
+    --line: #C5CEDC;
+    --ink: #22314A;
+    --ink-soft: #57647D;
+    --stamp-red: #A6413A;
+    --stamp-blue: #2B4A6B;
+    --gold: #C1652F;
+    --white: #FBFCFD;
+    --radius: 2px;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
+    line-height: 1.7;
+  }
+  .wrap{ max-width: 760px; margin: 0 auto; padding: 28px 18px 80px; }
+
+  .site-header{
+    display:flex; align-items:center; gap:8px;
+    padding: 4px 2px 18px;
+    font-family:"Roboto Mono", monospace;
+    font-size: 12px; letter-spacing: .08em; color: var(--ink-soft);
+  }
+  .site-header a{ color: inherit; text-decoration: none; }
+  .site-header .brand{
+    font-family:"Zen Old Mincho", serif;
+    font-size: 15px; color: var(--ink); font-weight: 700; letter-spacing: .04em;
+  }
+
+  .cover{
+    background: linear-gradient(180deg, #22314A 0%, #1A2438 100%);
+    color: #EFE9D8;
+    border-radius: 6px;
+    padding: 30px 26px 26px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(30,45,35,0.25);
+    overflow: hidden;
+  }
+  .cover::before{
+    content:""; position:absolute; inset:8px;
+    border: 1px solid rgba(239,233,216,0.35);
+    border-radius: 3px; pointer-events:none;
+  }
+  .cover .eyebrow{
+    font-family:"Roboto Mono", monospace; font-size: 11px;
+    letter-spacing: .18em; color: var(--gold); text-transform: uppercase;
+  }
+  .cover h1{
+    font-family: "Zen Old Mincho", serif; font-weight: 700;
+    font-size: clamp(22px, 5vw, 30px); margin: 10px 0 6px; letter-spacing: .02em;
+  }
+  .cover p.sub{ font-family:"Zen Old Mincho", serif; font-size: 13px; color: #C9C3AC; margin: 0; }
+
+  .article{ padding: 4px 2px; margin-top: 20px; }
+  .article .lead{ font-size: 14px; line-height: 1.9; color: var(--ink-soft); margin: 0 0 12px; }
+
+  section.card{
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-top: 18px;
+    padding: 22px 20px;
+  }
+  .section-label{
+    font-family:"Roboto Mono", monospace; font-size: 11px; letter-spacing: .14em;
+    color: var(--ink-soft); text-transform: uppercase;
+    display:flex; align-items:center; gap: 8px; margin-bottom: 14px;
+  }
+  .section-label::after{
+    content:""; flex:1; height:1px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
+  }
+
+  .field-row{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+  .field{ display:flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px dotted var(--line); }
+  .field label{ font-size: 12.5px; color: var(--ink-soft); }
+  .field .input-line{ display:flex; align-items: baseline; gap: 6px; }
+  .field input[type=number]{
+    font-family:"Roboto Mono", monospace; font-size: 20px; font-weight: 500;
+    color: var(--ink); border: none; background: transparent; width: 100%;
+    padding: 2px 0; outline: none;
+  }
+  .field input[type=number]:focus-visible{ outline: 2px solid var(--stamp-blue); outline-offset: 2px; border-radius: 2px; }
+  .field .unit{ font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+
+  .rule-note{
+    font-size: 12.5px; color: var(--ink-soft); background: var(--paper);
+    border-left: 3px solid var(--gold); padding: 10px 12px; border-radius: 0 2px 2px 0;
+    margin-bottom: 14px;
+  }
+  .rule-note b{ color: var(--ink); }
+
+  select.type-select{
+    font-family:"Zen Kaku Gothic New", sans-serif; font-size: 13px; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--line); border-radius: 20px;
+    padding: 9px 14px; width: 100%;
+  }
+
+  /* comparison table */
+  .compare-wrap{ overflow-x: auto; border: 1px solid var(--line); border-radius: 2px; }
+  table.compare{ width: 100%; min-width: 560px; border-collapse: collapse; font-size: 13px; }
+  table.compare thead th{
+    background: var(--paper-deep); color: var(--ink-soft); font-weight: 500; font-size: 11px;
+    text-align: right; padding: 9px 10px; border-bottom: 1px solid var(--line);
+  }
+  table.compare thead th:first-child{ text-align:left; }
+  table.compare td{ padding: 10px; border-bottom: 1px dotted var(--line); text-align: right; font-family:"Roboto Mono", monospace; }
+  table.compare td:first-child{ text-align:left; font-family:"Zen Kaku Gothic New", sans-serif; }
+  table.compare tr.best td{ background: #EAF1E6; font-weight: 700; }
+  .scroll-hint{ font-size: 10.5px; color: var(--ink-soft); text-align: right; margin-bottom: 6px; }
+  @media (min-width: 700px){ .scroll-hint{ display:none; } }
+
+  .verdict{ display:flex; align-items:center; gap: 20px; padding: 10px 4px 4px; }
+  .stamp{
+    width: 108px; height: 108px; border-radius: 50%; border: 3px solid var(--stamp-blue);
+    color: var(--stamp-blue); display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transform: rotate(-8deg); font-family:"Zen Old Mincho", serif; flex-shrink: 0; position: relative;
+  }
+  .stamp::before{ content:""; position:absolute; inset: 6px; border: 1px solid var(--stamp-blue); border-radius: 50%; }
+  .stamp .big{ font-size: 15px; font-weight: 700; line-height:1.3; }
+  .verdict-text{ font-size: 13.5px; color: var(--ink-soft); }
+  .verdict-text b{ color: var(--ink); }
+  .verdict-headline{ margin: 0 0 14px; font-size: 13.5px; line-height:1.6; }
+  .verdict-headline b{ display:block; font-size: 30px; font-weight:700; line-height:1.15; margin: 4px 0 2px; color: var(--stamp-red); }
+
+  .breakdown-rows{ margin: 14px 0; }
+  .breakdown-row{
+    display:flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    padding: 6px 0; border-bottom: 1px dotted var(--line);
+    font-size: 12.5px;
+  }
+  .breakdown-row span:first-child{ color: var(--ink-soft); }
+  .breakdown-row span:last-child{ font-family:"Roboto Mono", monospace; color: var(--ink); font-weight: 500; }
+
+  .warn-badge{
+    display:block; font-size: 12px; color: var(--stamp-red); background: #F7E9E7;
+    border: 1px solid var(--stamp-red); border-radius: 10px; padding: 10px 14px; margin-top: 12px; line-height:1.7;
+  }
+
+  .article-section{ margin-top: 34px; }
+  .article-section h2{
+    font-family:"Zen Old Mincho", serif; font-size: 18px; color: var(--ink);
+    border-left: 3px solid var(--gold); padding-left: 10px; margin: 0 0 14px;
+  }
+  .article-section h3{ font-family:"Zen Kaku Gothic New", sans-serif; font-size: 14.5px; color: var(--ink); margin: 18px 0 8px; }
+  .article-section p{ font-size: 13.5px; line-height: 1.9; color: var(--ink-soft); margin: 0 0 12px; }
+  .article-section ul{ margin: 0 0 12px; padding-left: 1.3em; font-size: 13.5px; line-height: 1.9; color: var(--ink-soft); }
+  .article-section li{ margin-bottom: 4px; }
+
+  /* ---- A8.net ジャンル別バナー枠 ---- */
+  .ad-frame{
+    margin: 24px 0;
+    background: #FBF2E9;
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .ad-frame-head{
+    display:flex; align-items:center; gap:10px;
+    padding: 12px 18px;
+    background: var(--paper-deep);
+    border-bottom: 1px dashed var(--line);
+  }
+  .ad-frame .pr-badge{
+    flex-shrink:0; width:30px; height:30px; border-radius:50%;
+    border:2px solid var(--stamp-red); color:var(--stamp-red);
+    background: var(--white); display:flex; align-items:center; justify-content:center;
+    font-family:"Zen Old Mincho", serif; font-weight:700; font-size:10px;
+    transform: rotate(-8deg);
+  }
+  .ad-frame-title{ font-family:"Zen Old Mincho", serif; font-size: 14.5px; color: var(--ink); }
+  .ad-frame-body{ padding: 16px 18px; display:flex; flex-direction:column; gap: 14px; }
+  .ad-item{ display:flex; align-items:center; gap: 12px; flex-wrap: wrap; }
+  .ad-item .ad-tag{
+    font-family:"Roboto Mono", monospace; font-size: 11px; color: var(--ink-soft);
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    padding: 4px 10px; white-space: nowrap;
+  }
+  .ad-item a{ display:inline-block; line-height:0; }
+  .ad-item img{ max-width: 100%; height: auto; }
+
+  .rate-ref{ font-size: 13px; }
+  .rate-ref table{ width:100%; border-collapse: collapse; font-size: 13px; margin: 10px 0 14px; }
+  .rate-ref th{ text-align:left; color: var(--ink-soft); font-weight:500; padding: 8px 8px 8px 0; border-bottom: 1px dotted var(--line); }
+  .rate-ref td{ padding: 8px 8px 8px 0; color: var(--ink); border-bottom: 1px dotted var(--line); font-family:"Roboto Mono", monospace; }
+
+  /* ---- bank comparison table ---- */
+  .bank-table-wrap{ overflow-x: auto; border: 1px solid var(--line); border-radius: 2px; }
+  table.bank-table{ width: 100%; min-width: 620px; border-collapse: collapse; font-size: 13px; }
+  table.bank-table thead th{
+    background: var(--paper-deep); color: var(--ink-soft); font-weight: 500; font-size: 11px;
+    text-align: right; padding: 9px 10px; border-bottom: 1px solid var(--line);
+  }
+  table.bank-table thead th:first-child{ text-align:left; }
+  table.bank-table td{ padding: 10px; border-bottom: 1px dotted var(--line); text-align: right; font-family:"Roboto Mono", monospace; }
+  table.bank-table td:first-child{ text-align:left; font-family:"Zen Kaku Gothic New", sans-serif; }
+  table.bank-table tbody tr{ cursor: pointer; transition: background .12s; }
+  table.bank-table tbody tr:hover{ background: var(--paper); }
+  table.bank-table tr.active-row{ background: #E4EAF1; }
+  .bank-name{ display:flex; align-items:center; gap:8px; }
+  .official-link{ display:block; margin-top:4px; font-size:10px; color:var(--ink-soft); text-decoration:none; }
+  .official-link:hover{ color: var(--stamp-blue); text-decoration: underline; }
+  .type-badge{ font-family:"Roboto Mono", monospace; font-size: 9.5px; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+  .type-badge.bank{ background:#DCE7F0; color:var(--stamp-blue); }
+  .type-badge.dealer{ background:#F3E2D6; color:var(--gold); }
+  .type-badge.zankure{ background:#EFE3E2; color:var(--stamp-red); }
+  .use-btn{
+    font-family:"Zen Kaku Gothic New", sans-serif; font-size: 12px; color: var(--stamp-blue);
+    background: none; border: 1px solid var(--stamp-blue); border-radius: 14px; padding: 7px 13px; cursor: pointer;
+  }
+  table.bank-table tr.active-row .use-btn{ background: var(--stamp-blue); color:#fff; }
+  .source-note{ font-size: 11px; color: var(--ink-soft); margin-top: 10px; }
+
+  .faq-item{ border-bottom: 1px dotted var(--line); padding: 16px 0; }
+  .faq-item:first-child{ padding-top: 0; }
+  .faq-q{ display:flex; gap: 10px; font-weight: 700; color: var(--ink); font-size: 14px; margin-bottom: 8px; }
+  .faq-q .qa-mark{ font-family:"Roboto Mono", monospace; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+  .faq-a{ display:flex; gap: 10px; font-size: 13.5px; line-height: 1.8; color: var(--ink-soft); }
+  .faq-a .qa-mark{ font-family:"Roboto Mono", monospace; color: var(--stamp-blue); font-weight: 700; flex-shrink: 0; }
+
+  .site-footer{ margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 11px; color: var(--ink-soft); line-height: 1.8; }
+  .site-footer a{ color: var(--stamp-blue); }
+  .site-footer .updated{ font-family:"Roboto Mono", monospace; font-size: 10px; color: var(--ink-soft); margin-bottom: 8px; }
+  .notice{ background: var(--paper); border: 1px dashed var(--line); border-radius: 2px; padding: 14px 16px; margin-top: 18px; }
+  .notice p{ margin: 0 0 6px; font-size: 12px; color: var(--ink-soft); }
+  .notice p:last-child{ margin-bottom:0; }
+
+  @media (max-width: 480px){
+    .field-row{ grid-template-columns: 1fr; }
+    .verdict{ flex-direction: column; text-align:center; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="site-header">
+    <a href="/"><span class="brand">tsucho-lab</span></a>
+    <span>マイカーローン通帳</span>
+    <a href="/housing-loan.html" style="margin-left:auto; color:var(--stamp-blue); text-decoration:none;">住宅ローン通帳 →</a>
+  </div>
+
+  <div class="cover">
+    <div class="eyebrow">Car Loan Simulation</div>
+    <h1>マイカーローン通帳</h1>
+    <p class="sub">銀行ローン・ディーラーローン・残クレを、総支払額で見比べる</p>
+  </div>
+
+  <div class="article">
+    <p class="lead">
+      車を買うとき、ローンの組み方には大きく3つの選択肢があります。銀行の「マイカーローン」、ディーラーが用意する「ディーラーローン」、そして月々の負担が軽く見える「残価設定型ローン(残クレ)」です。ディーラーの店頭では、月々の支払額だけを見せられて残クレを勧められることも多いですが、実は<b>総支払額で比較すると、印象が大きく変わる</b>ことがあります。
+    </p>
+    <p class="lead">
+      このツールでは、同じ車を同じ条件で買った場合、3つの方法でどれだけ支払総額に差が出るかを試算できます。
+    </p>
+  </div>
+
+  <section class="card">
+    <div class="section-label">車両条件</div>
+    <div class="field-row">
+      <div class="field">
+        <label for="carPrice">車両価格</label>
+        <div class="input-line">
+          <input type="number" inputmode="numeric" id="carPrice" value="300" min="10" step="10">
+          <span class="unit">万円</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="downPayment">頭金</label>
+        <div class="input-line">
+          <input type="number" inputmode="numeric" id="downPayment" value="0" min="0" step="10">
+          <span class="unit">万円</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="loanTerm">契約期間</label>
+        <div class="input-line">
+          <input type="number" inputmode="numeric" id="loanTerm" value="5" min="1" max="10" step="1">
+          <span class="unit">年</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="residualRate">残クレの残価率</label>
+        <div class="input-line">
+          <input type="number" inputmode="numeric" id="residualRate" value="40" min="0" max="90" step="1">
+          <span class="unit">%(目安)</span>
+        </div>
+      </div>
+    </div>
+    <div class="rule-note" style="margin-top:14px; margin-bottom:0;">
+      残価率は、車種・グレード・契約年数によって変わります(一般的に30〜50%程度が目安)。契約前にディーラーへ確認してください。
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-label">それぞれの金利</div>
+    <div class="field-row">
+      <div class="field">
+        <label for="bankRate">銀行マイカーローン</label>
+        <div class="input-line">
+          <input type="number" inputmode="decimal" id="bankRate" value="2.5" min="0" step="0.1">
+          <span class="unit">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="dealerRate">ディーラーローン</label>
+        <div class="input-line">
+          <input type="number" inputmode="decimal" id="dealerRate" value="6.0" min="0" step="0.1">
+          <span class="unit">%</span>
+        </div>
+      </div>
+      <div class="field">
+        <label for="zankureRate">残クレ(残価設定ローン)</label>
+        <div class="input-line">
+          <input type="number" inputmode="decimal" id="zankureRate" value="5.0" min="0" step="0.1">
+          <span class="unit">%</span>
+        </div>
+      </div>
+    </div>
+    <div class="rule-note" style="margin-top:14px; margin-bottom:0;">
+      初期値は2026年の一般的な相場(銀行系:年1%台後半〜4%程度、ディーラー:年4〜8%程度)を参考にした目安です。実際の適用金利は、審査結果やキャンペーンによって変わります。
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-label">金利相場を見る</div>
+    <div class="scroll-hint">→ 横にスクロールできます</div>
+    <div class="bank-table-wrap">
+      <table class="bank-table">
+        <thead>
+          <tr>
+            <th>銀行・ローン種別</th>
+            <th>金利(目安)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rateTableBody"></tbody>
+      </table>
+    </div>
+    <p class="source-note">
+      表示金利は各行公式サイトが示す代表的な優遇条件下での年利、またはディーラーローン・残クレの一般的な相場です(2026年8月時点)。行をタップすると、その金利が上の入力欄に反映されます。実際の適用金利は審査結果や条件により異なります。
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="section-label">総支払額の比較</div>
+    <div class="scroll-hint">→ 横にスクロールできます</div>
+    <div class="compare-wrap">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>方法</th>
+            <th>月々の支払額</th>
+            <th>総支払額</th>
+            <th>完済後</th>
+          </tr>
+        </thead>
+        <tbody id="compareBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-label">判定</div>
+    <div class="verdict" id="verdict"></div>
+  </section>
+
+  <div class="ad-frame">
+    <div class="ad-frame-head">
+      <span class="pr-badge">PR</span>
+      <span class="ad-frame-title">愛車を売るなら</span>
+    </div>
+    <div class="ad-frame-body">
+      <div class="ad-item">
+        <span class="ad-tag">オークション形式なら</span>
+        <a href="https://px.a8.net/svt/ejp?a8mat=4BA75B+1WGW4A+3O80+639IP" target="_blank" rel="nofollow sponsored noopener">
+        <img border="0" width="468" height="60" alt="" src="https://www22.a8.net/svt/bgt?aid=260816303115&wid=002&eno=01&mid=s00000017136001023000&mc=1"></a>
+      </div>
+    </div>
+  </div>
+  <img border="0" width="1" height="1" src="https://www16.a8.net/0.gif?a8mat=4BA75B+1WGW4A+3O80+639IP" alt="">
+
+  <div class="ad-frame">
+    <div class="ad-frame-head">
+      <span class="pr-badge">PR</span>
+      <span class="ad-frame-title">中古車を探すなら</span>
+    </div>
+    <div class="ad-frame-body">
+      <div class="ad-item">
+        <a href="https://px.a8.net/svt/ejp?a8mat=4BA8P5+EFRHFM+9QU+NTJWX" target="_blank" rel="nofollow sponsored noopener">
+        <img border="0" width="468" height="60" alt="" src="https://www29.a8.net/svt/bgt?aid=260818313873&wid=003&eno=01&mid=s00000001263004001000&mc=1"></a>
+      </div>
+    </div>
+  </div>
+  <img border="0" width="1" height="1" src="https://www13.a8.net/0.gif?a8mat=4BA8P5+EFRHFM+9QU+NTJWX" alt="">
+
+  <div class="notice">
+    <p>※ 残クレの月々の支払額は、契約満了時に残価分の支払い(または返却)が発生する「バルーン返済」の考え方で試算しています。実際の契約では、ボーナス払いの有無や査定基準など、金融機関・ディーラーごとに細かな条件が異なります。</p>
+    <p>※ このシミュレーターは簡易試算です。実際の借入判断は、各金融機関・ディーラーへのご確認のうえ、ご自身の責任で行ってください。特定の金融商品を推奨するものではありません。</p>
+  </div>
+
+  <div class="article">
+
+    <div class="article-section">
+      <h2>残クレ「返却」が一番安く見えるのはなぜ?</h2>
+      <p>
+        上の比較表で、残クレの「返却」を選んだ場合が最も総支払額が低く出ることが多いはずです。ですが、これは正確な比較ではありません。<b>返却した場合、車という資産が手元に一切残らない</b>からです。
+      </p>
+      <p>
+        銀行ローンやディーラーローンで完済すれば、車は完全に自分のものになります。将来売却すれば、いくらかの現金が戻ってきます。残クレの「返却」は、いわば<b>「車を借りていた」だけの状態</b>に近く、総支払額の数字だけで単純比較すると、実態を見誤りやすい部分です。
+      </p>
+      <h3>残クレ「買取」を選んだ場合</h3>
+      <p>
+        契約満了時に残価を支払って車を買い取ると、その時点で車は自分のものになります。ただしこの場合、総支払額は銀行ローンやディーラーローンより高くなることが多いです。「残価部分にも契約期間中ずっと金利がかかり続ける」ため、月々の負担が軽い代わりに、利息の総額は増えやすい構造になっているためです。
+      </p>
+    </div>
+
+    <div class="article-section">
+      <h2>3つのローンの違い</h2>
+
+      <h3>銀行マイカーローン</h3>
+      <p>
+        銀行に直接申し込む、車専用の無担保ローンです。審査にディーラーローンより日数がかかることが多いですが、一般的に金利が最も低く、総支払額を抑えやすいのが特徴です。完済すれば所有権は最初から自分にあります。
+      </p>
+      <h3>ディーラーローン</h3>
+      <p>
+        車を購入するディーラーの店頭でそのまま申し込める、信販会社のローンです。手続きが簡単で審査も早い一方、金利は銀行系より高めに設定されていることが多いです。ただし新車購入時にメーカーのキャンペーン金利(低金利や金利0%)が適用される場合は、この限りではありません。
+      </p>
+      <h3>残価設定型ローン(残クレ)</h3>
+      <p>
+        車両価格からあらかじめ「残価(将来の下取り予想額)」を差し引き、残りの金額だけを分割払いする仕組みです。月々の負担は軽くなりますが、契約期間中は所有権がローン会社にあり、走行距離の制限や、契約満了時に「返却・買取・乗り換え」のいずれかを選ぶ必要があるなど、通常のローンにはない制約があります。
+      </p>
+    </div>
+
+    <div class="article-section rate-ref">
+      <h2>金利の相場(参考)</h2>
+      <table>
+        <tr><th>銀行マイカーローン</th><td>年1%台後半〜4%程度</td></tr>
+        <tr><th>ディーラーローン</th><td>年4%〜8%程度</td></tr>
+        <tr><th>残クレ(残価設定ローン)</th><td>ディーラーローンと同程度〜やや高め</td></tr>
+      </table>
+      <p style="font-size:12px; color:var(--ink-soft);">2026年時点の一般的な相場です。優遇条件やキャンペーンにより、実際の適用金利は変動します。正確な金利は各金融機関・ディーラーの公式情報でご確認ください。</p>
+    </div>
+
+    <div class="article-section">
+      <h2>よくある質問</h2>
+      <div class="faq-item">
+        <div class="faq-q"><span class="qa-mark">Q</span><span>結局どれが一番安いですか?</span></div>
+        <div class="faq-a"><span class="qa-mark">A</span><span>総支払額だけで見れば、銀行のマイカーローンが最も安くなりやすい傾向があります。ただし審査スピードや必要書類、手元に何が残るかまで含めて、総合的に判断することが大切です。</span></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="qa-mark">Q</span><span>残クレで「返却」を選べば一番お得ということですか?</span></div>
+        <div class="faq-a"><span class="qa-mark">A</span><span>総支払額の数字だけを見るとそう見えますが、正確な比較ではありません。返却すると車という資産が一切手元に残らないためです。「手元に何が残るか」まで含めて考える必要があります。</span></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q"><span class="qa-mark">Q</span><span>残クレの残価はどう決まりますか?</span></div>
+        <div class="faq-a"><span class="qa-mark">A</span><span>契約満了時点でのその車の予想下取り価格を、車種・グレードごとにメーカーやディーラーが設定します。一般的に車両価格の30〜50%程度が目安ですが、正確な数値は契約先にご確認ください。</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="site-footer">
+    <div class="updated">最終更新:2026年8月(金利相場の確認基準日)</div>
+    <p><b style="color:var(--ink);">本サイトはアフィリエイト広告を利用しています(PR)。</b>紹介する情報は公正な内容となるよう努めていますが、リンク先での申し込み・成約により、当サイトが成果報酬を得る場合があります。</p>
+    <p>本サイトは個人が運営する情報提供サイトです。特定の金融機関・ローン商品を推奨するものではなく、投資助言や金融アドバイスを目的としたものでもありません。掲載内容の正確性には配慮していますが、実際の借入条件・金利は必ず各金融機関・ディーラーの公式情報でご確認ください。</p>
+    <p><a href="/privacy.html">プライバシーポリシー・お問い合わせ</a> ・ <a href="/">tsucho-lab トップへ</a> ・ <a href="/housing-loan.html">住宅ローン通帳</a></p>
+    <p>© 2026 tsucho-lab</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+
+  function monthlyPayment(principal, annualRatePercent, months){
+    const r = annualRatePercent / 100 / 12;
+    if (r === 0) return principal / months;
+    const f = Math.pow(1+r, months);
+    return principal * r * f / (f - 1);
+  }
+
+  // バルーン返済(残クレ)用: 最終回に残価(FV)を残す前提での月々払いを計算
+  function balloonPayment(principal, annualRatePercent, months, futureValue){
+    const r = annualRatePercent / 100 / 12;
+    if (r === 0) return (principal - futureValue) / months;
+    const f = Math.pow(1+r, months);
+    return (principal - futureValue / f) * r * f / (f - 1);
+  }
+
+  function fmt(man){ return Math.round(man).toLocaleString("ja-JP"); }
+
+  // スタンプ内の文字が中途半端な位置で折り返されないよう、意味の区切りで改行を入れる
+  function stampLabel(name){
+    const plain = name.replace(/\(.*\)/, "");
+    const map = {
+      "銀行マイカーローン": "銀行<br>マイカー<br>ローン",
+      "ディーラーローン": "ディーラー<br>ローン",
+      "残クレ": "残クレ"
+    };
+    return map[plain] || plain;
+  }
+
+  // 2026年8月時点の代表的な金利水準(各行公式サイト掲載の優遇条件下での年利)。
+  // ディーラーローン・残クレは、個別の会社ごとに大きく異なるため一般的な相場として掲載。
+  const rateTable = [
+    { name: "千葉銀行(マイカーローン)", type: "bank", rate: "年1.15%〜3.40%", targetField: "bankRate", value: 1.15, url: "https://www.chibabank.co.jp/kojin/services/loan/mycar/mycar_new" },
+    { name: "りそな銀行(マイカーローン)", type: "bank", rate: "年1.55%〜4.475%", targetField: "bankRate", value: 1.55, url: "https://www.resonabank.co.jp/kojin/mycar/" },
+    { name: "三菱UFJ銀行(ネットDEマイカーローン)", type: "bank", rate: "上限年3.250%", targetField: "bankRate", value: 3.25, url: "https://www.bk.mufg.jp/kariru/mycar/index.html" },
+    { name: "ディーラーローン(一般的な相場)", type: "dealer", rate: "年4%〜8%程度", targetField: "dealerRate", value: 6.0, url: null },
+    { name: "残クレ(一般的な相場)", type: "zankure", rate: "ディーラーローンと同程度〜やや高め", targetField: "zankureRate", value: 6.5, url: null }
+  ];
+  const rateTypeLabel = { bank: "銀行", dealer: "ディーラー", zankure: "残クレ" };
+  let activeRateName = null;
+
+  function renderRateTable(){
+    const tbody = $("rateTableBody");
+    tbody.innerHTML = "";
+    rateTable.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.tabIndex = 0;
+      tr.setAttribute("role", "button");
+      tr.setAttribute("aria-label", `${item.name}の金利をこのシミュレーションに反映する`);
+      if (item.name === activeRateName) tr.classList.add("active-row");
+      tr.innerHTML = `
+        <td>
+          <span class="bank-name">${item.name}<span class="type-badge ${item.type}">${rateTypeLabel[item.type]}</span></span>
+          ${item.url ? `<a class="official-link" href="${item.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">公式サイトを見る ↗</a>` : ""}
+        </td>
+        <td>${item.rate}</td>
+        <td><button type="button" class="use-btn">${item.name === activeRateName ? "反映中" : "使う"}</button></td>
+      `;
+      const apply = () => {
+        activeRateName = item.name;
+        $(item.targetField).value = item.value;
+        renderRateTable();
+        render();
+      };
+      tr.addEventListener("click", apply);
+      tr.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); apply(); }
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  function render(){
+    const carPrice = parseFloat($("carPrice").value) || 0;
+    const downPayment = parseFloat($("downPayment").value) || 0;
+    const term = parseInt($("loanTerm").value) || 1;
+    const months = term * 12;
+    const residualRate = parseFloat($("residualRate").value) || 0;
+
+    const bankRate = parseFloat($("bankRate").value) || 0;
+    const dealerRate = parseFloat($("dealerRate").value) || 0;
+    const zankureRate = parseFloat($("zankureRate").value) || 0;
+
+    const principal = Math.max(0, carPrice - downPayment);
+    const residualValue = carPrice * (residualRate/100);
+    const zankurePrincipal = Math.max(0, carPrice - downPayment - residualValue);
+
+    // 銀行・ディーラー: 通常の元利均等返済
+    const bankMonthly = monthlyPayment(principal, bankRate, months);
+    const dealerMonthly = monthlyPayment(principal, dealerRate, months);
+
+    // 残クレ: バルーン返済
+    const zankureMonthly = balloonPayment(carPrice - downPayment, zankureRate, months, residualValue);
+
+    const rows = [
+      {
+        name: "銀行マイカーローン", monthly: bankMonthly, total: downPayment + bankMonthly*months, after: "完済(自分のもの)",
+        breakdown: [
+          { label: "頭金", value: downPayment },
+          { label: "元金(借入額)", value: principal },
+          { label: "利息合計", value: bankMonthly*months - principal }
+        ]
+      },
+      {
+        name: "ディーラーローン", monthly: dealerMonthly, total: downPayment + dealerMonthly*months, after: "完済(自分のもの)",
+        breakdown: [
+          { label: "頭金", value: downPayment },
+          { label: "元金(借入額)", value: principal },
+          { label: "利息合計", value: dealerMonthly*months - principal }
+        ]
+      },
+      {
+        name: "残クレ(返却した場合)", monthly: zankureMonthly, total: downPayment + zankureMonthly*months, after: "車は返却(資産は残らない)",
+        breakdown: [
+          { label: "頭金", value: downPayment },
+          { label: "元金相当分", value: zankurePrincipal },
+          { label: "利息合計", value: zankureMonthly*months - zankurePrincipal }
+        ]
+      },
+      {
+        name: "残クレ(買取した場合)", monthly: zankureMonthly, total: downPayment + zankureMonthly*months + residualValue, after: "残価を支払い、自分のものに",
+        breakdown: [
+          { label: "頭金", value: downPayment },
+          { label: "元金相当分", value: zankurePrincipal },
+          { label: "利息合計", value: zankureMonthly*months - zankurePrincipal },
+          { label: "残価の精算(買取)", value: residualValue }
+        ]
+      }
+    ];
+
+    const minTotal = Math.min(...rows.map(r => r.total));
+
+    const tbody = $("compareBody");
+    tbody.innerHTML = "";
+    rows.forEach(r => {
+      const tr = document.createElement("tr");
+      if (Math.abs(r.total - minTotal) < 0.5) tr.className = "best";
+      tr.innerHTML = `
+        <td>${r.name}</td>
+        <td>${fmt(r.monthly)}万円</td>
+        <td>${fmt(r.total)}万円</td>
+        <td>${r.after}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // 判定: 「車が資産として残る」選択肢の中で最安を選ぶ(返却は資産ゼロなので参考値として除外して比較)
+    const ownershipRows = rows.filter(r => r.name !== "残クレ(返却した場合)");
+    const cheapestOwned = ownershipRows.reduce((a,b) => a.total < b.total ? a : b);
+    const mostExpensiveOwned = ownershipRows.reduce((a,b) => a.total > b.total ? a : b);
+    const gap = mostExpensiveOwned.total - cheapestOwned.total;
+
+    const verdictEl = $("verdict");
+    verdictEl.innerHTML = `
+      <div class="stamp">
+        <span class="big">${stampLabel(cheapestOwned.name)}</span>
+      </div>
+      <div class="verdict-text">
+        <p class="verdict-headline">車を手元に残す前提なら、最も安いのは<br><b>${fmt(cheapestOwned.total)}万円</b>(${cheapestOwned.name})です。</p>
+        <p>同じく車が手元に残る選択肢の中で、最も高い方法との差はおよそ<b>${fmt(gap)}万円</b>でした。</p>
+        <div class="breakdown-rows">
+          ${cheapestOwned.breakdown.map(b => `<div class="breakdown-row"><span>${b.label}</span><span>${fmt(b.value)}万円</span></div>`).join("")}
+        </div>
+        <div class="warn-badge">⚠ 「残クレ(返却)」は数字上は最安に見えますが、車という資産が一切残らない点にご注意ください。手元に何を残したいかで、最適な選択は変わります。</div>
+      </div>
+    `;
+  }
+
+  document.querySelectorAll("input").forEach(inp => inp.addEventListener("input", render));
+  renderRateTable();
+  render();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>変動金利 vs 固定金利、利上げが来たらどうなる?住宅ローン通帳シミュレーター</title>
+<meta name="description" content="住宅ローンの変動金利と固定金利、金利が上がったらどちらが得か無料でシミュレーション。5年ルール・125%ルール、フラット35にも対応し、主要銀行6行の最新金利も比較できます。">
+<link rel="canonical" href="https://tsucho-lab.com/housing-loan.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="変動金利 vs 固定金利、利上げが来たらどうなる?住宅ローン通帳シミュレーター">
+<meta property="og:description" content="住宅ローンの変動金利と固定金利、金利が上がったらどちらが得か無料でシミュレーション。5年ルール・125%ルール、フラット35にも対応。">
+<meta property="og:url" content="https://tsucho-lab.com/housing-loan.html">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://tsucho-lab.com/og-housing-loan.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "変動金利と固定金利、結局どっちがいいの?",
+      "acceptedAnswer": { "@type": "Answer", "text": "一概にどちらが正解とは言えません。金利がどのくらい・いつ上がるかは誰にも予測できないため、将来の金利上昇シナリオを複数試算して、自分がどこまでのリスクを許容できるかで判断するのが現実的です。このツールでは楽観・中立・悲観のシナリオを切り替えて、総返済額の違いを具体的に比較できます。" }
+    },
+    {
+      "@type": "Question",
+      "name": "5年ルール・125%ルールとは何ですか?",
+      "acceptedAnswer": { "@type": "Answer", "text": "多くの銀行の変動金利ローンに採用されている緩和措置です。5年ルールは返済額が5年ごとにしか見直されないルール、125%ルールは見直し後の返済額が直前の1.25倍までしか上がらないルールです。急激な負担増は抑えられますが、その分、利息の支払いが追いつかず「未払利息」が発生することがあります。" }
+    },
+    {
+      "@type": "Question",
+      "name": "フラット35と10年固定の違いは?",
+      "acceptedAnswer": { "@type": "Answer", "text": "フラット35は借入から完済まで金利が変わらない全期間固定金利です。一方、銀行の「10年固定」は最初の10年だけ金利が固定され、11年目以降は別の金利に切り替わります。長期の金利変動リスクを完全に避けたい場合はフラット35、当初の返済負担を抑えたい場合は10年固定、といった向き不向きがあります。" }
+    },
+    {
+      "@type": "Question",
+      "name": "このシミュレーターは正確ですか?",
+      "acceptedAnswer": { "@type": "Answer", "text": "元利均等返済を前提とした簡易試算であり、実際の金融機関の計算式や個別の優遇条件とは差が生じます。あくまで「傾向をつかむための試算」としてご利用ください。実際の借入条件は金融機関に個別にご確認ください。" }
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF3EA;
+    --paper-deep: #E4EBDF;
+    --line: #C4D2BC;
+    --ink: #24392E;
+    --ink-soft: #5B6F5D;
+    --stamp-red: #A6413A;
+    --stamp-blue: #2B4A6B;
+    --gold: #A9863F;
+    --white: #FBFCF9;
+    --radius: 2px;
+  }
+  *{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust: 100%; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
+    line-height: 1.7;
+  }
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 18px 80px;
+  }
+  /* ---- cover ---- */
+  .cover{
+    background: linear-gradient(180deg, #2C4A3C 0%, #23392D 100%);
+    color: #EFE9D8;
+    border-radius: 6px;
+    padding: 30px 26px 26px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(30,45,35,0.25);
+    overflow: hidden;
+  }
+  .cover::before{
+    content:"";
+    position:absolute; inset:8px;
+    border: 1px solid rgba(239,233,216,0.35);
+    border-radius: 3px;
+    pointer-events:none;
+  }
+  .cover .eyebrow{
+    font-family:"Roboto Mono", monospace;
+    font-size: 11px;
+    letter-spacing: .18em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .cover h1{
+    font-family: "Zen Old Mincho", serif;
+    font-weight: 700;
+    font-size: clamp(24px, 5vw, 34px);
+    margin: 10px 0 6px;
+    letter-spacing: .04em;
+  }
+  .cover p.sub{
+    font-family:"Zen Old Mincho", serif;
+    font-size: 13px;
+    color: #C9C3AC;
+    margin: 0;
+  }
+  .cover .meta{
+    margin-top: 22px;
+    display:flex;
+    justify-content: space-between;
+    font-family:"Roboto Mono", monospace;
+    font-size: 11px;
+    color: #C9C3AC;
+    border-top: 1px dashed rgba(239,233,216,0.3);
+    padding-top: 12px;
+  }
+
+  /* ---- section shell ---- */
+  section.card{
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-top: 18px;
+    padding: 22px 20px;
+  }
+  .section-label{
+    font-family:"Roboto Mono", monospace;
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .section-label::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
+  }
+
+  /* ---- form ---- */
+  .field-row{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
+  }
+  .field{
+    display:flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted var(--line);
+  }
+  .field label{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .field .input-line{
+    display:flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .field input[type=number]{
+    font-family:"Roboto Mono", monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink);
+    border: none;
+    background: transparent;
+    width: 100%;
+    padding: 2px 0;
+    outline: none;
+  }
+  .field input[type=number]:focus-visible{
+    outline: 2px solid var(--stamp-blue);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  .field .unit{
+    font-size: 12px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .scenario-group{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .scenario-btn{
+    font-family:"Zen Kaku Gothic New", sans-serif;
+    font-size: 13px;
+    padding: 11px 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .scenario-btn:hover{ border-color: var(--stamp-blue); }
+  .scenario-btn:focus-visible{ outline: 2px solid var(--stamp-blue); outline-offset: 2px; }
+  .scenario-btn[aria-pressed="true"]{
+    background: var(--stamp-blue);
+    border-color: var(--stamp-blue);
+    color: #fff;
+  }
+  .scenario-desc{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border-left: 3px solid var(--gold);
+    padding: 10px 12px;
+    border-radius: 0 2px 2px 0;
+  }
+  .custom-fields{
+    display:none;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .custom-fields.show{ display:grid; }
+  .radio-pill{
+    display:flex; align-items:center; gap:7px;
+    font-size:13px; color:var(--ink-soft);
+    background: var(--paper);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:10px 16px;
+    cursor:pointer;
+  }
+  .radio-pill input[type=radio]{
+    accent-color: var(--stamp-blue);
+    width:14px; height:14px;
+  }
+  .radio-pill:has(input:checked){
+    border-color: var(--stamp-blue);
+    color: var(--ink);
+  }
+  table.ledger tr.payoff td{ color: var(--stamp-blue); font-weight: 700; }
+
+  /* ---- bank comparison table ---- */
+  .bank-table-wrap{
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+  table.bank-table{
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.bank-table thead th{
+    background: var(--paper-deep);
+    color: var(--ink-soft);
+    font-weight: 500;
+    font-size: 11px;
+    text-align: right;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  table.bank-table thead th:first-child{ text-align:left; }
+  table.bank-table td{
+    padding: 10px;
+    border-bottom: 1px dotted var(--line);
+    text-align: right;
+    font-family:"Roboto Mono", monospace;
+  }
+  table.bank-table td:first-child{
+    text-align:left;
+    font-family:"Zen Kaku Gothic New", sans-serif;
+  }
+  table.bank-table tbody tr{
+    cursor: pointer;
+    transition: background .12s;
+  }
+  table.bank-table tbody tr:hover{ background: var(--paper); }
+  table.bank-table tbody tr:focus-visible{ outline: 2px solid var(--stamp-blue); outline-offset: -2px; }
+  table.bank-table tr.active-row{ background: #E7EEF3; }
+  .bank-name{ display:flex; align-items:center; gap:8px; }
+  .official-link{
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .official-link:hover{ color: var(--stamp-blue); text-decoration: underline; }
+  .type-badge{
+    font-family:"Roboto Mono", monospace;
+    font-size: 9.5px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .type-badge.mega{ background:#EAE3D2; color:#7A6328; }
+  .type-badge.net{ background:#DCE7F0; color:var(--stamp-blue); }
+  .type-badge.flat{ background:#E1E9DC; color:#3D5A44; }
+  .use-btn{
+    font-family:"Zen Kaku Gothic New", sans-serif;
+    font-size: 12px;
+    color: var(--stamp-blue);
+    background: none;
+    border: 1px solid var(--stamp-blue);
+    border-radius: 14px;
+    padding: 7px 13px;
+    cursor: pointer;
+  }
+  table.bank-table tr.active-row .use-btn{ background: var(--stamp-blue); color:#fff; }
+  .source-note{
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 10px;
+  }
+
+  /* ---- collapsible advanced options ---- */
+  .details-summary{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    cursor:pointer;
+    font-family:"Roboto Mono", monospace;
+    font-size: 11px;
+    letter-spacing: .14em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    list-style: none;
+    padding: 4px 0;
+  }
+  .details-summary::-webkit-details-marker{ display:none; }
+  .details-summary::marker{ content:""; }
+  .details-summary-line{
+    flex:1;
+    height:1px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
+  }
+  .details-chevron{
+    color: var(--ink-soft);
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: transform .15s;
+  }
+  details[open] .details-chevron{ transform: rotate(90deg); }
+  .details-body{ margin-top: 16px; }
+  .details-divider{
+    height:1px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px);
+    margin: 18px 0;
+  }
+  .active-pill{
+    font-family:"Roboto Mono", monospace;
+    font-size: 10px;
+    color: var(--stamp-blue);
+    background: #E7EEF3;
+    border-radius: 10px;
+    padding: 3px 9px;
+    flex-shrink: 0;
+    display: none;
+  }
+  .active-pill.show{ display:inline-block; }
+
+  .scroll-hint{
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    text-align: right;
+    margin-bottom: 6px;
+  }
+  @media (min-width: 700px){
+    .scroll-hint{ display:none; }
+  }
+
+  /* ---- ledger table ---- */
+  .ledger-scroll{
+    max-height: 340px;
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+  table.ledger{
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-family:"Roboto Mono", monospace;
+    font-size: 12.5px;
+  }
+  table.ledger td.unpaid{ color: var(--stamp-red); }
+  .rule-note{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border-left: 3px solid var(--stamp-blue);
+    padding: 10px 12px;
+    border-radius: 0 2px 2px 0;
+    margin-bottom: 14px;
+  }
+  .rule-note b{ color: var(--ink); }
+  .warn-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size: 12px;
+    color: var(--stamp-red);
+    background: #F7E9E7;
+    border: 1px solid var(--stamp-red);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-top: 10px;
+  }
+  table.ledger thead th{
+    position: sticky; top:0;
+    background: var(--paper-deep);
+    color: var(--ink-soft);
+    font-weight: 500;
+    text-align: right;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+  }
+  table.ledger thead th:first-child{ text-align:left; }
+  table.ledger td{
+    text-align: right;
+    padding: 7px 10px;
+    border-bottom: 1px dotted var(--line);
+    color: var(--ink);
+  }
+  table.ledger td:first-child{ text-align:left; color: var(--ink-soft); }
+  table.ledger tr.event td{ color: var(--stamp-red); font-weight: 700; }
+  table.ledger td.diff-plus{ color: var(--stamp-red); }
+  table.ledger td.diff-minus{ color: var(--stamp-blue); }
+
+  /* ---- chart ---- */
+  .chart-legend{
+    display:flex; gap: 18px; margin-bottom: 10px; font-size: 12.5px; color: var(--ink-soft);
+  }
+  .chart-legend span{ display:flex; align-items:center; gap:6px; }
+  .chart-caption{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: 10px 2px 0;
+  }
+  .chart-caption b{ color: var(--ink); }
+  .swatch{ width:14px; height:3px; border-radius:2px; display:inline-block; }
+  .swatch.area{ height:10px; border-radius:1px; }
+
+  /* ---- verdict stamp ---- */
+  .verdict{
+    display:flex;
+    align-items:center;
+    gap: 20px;
+    padding: 10px 4px 4px;
+  }
+  .stamp{
+    width: 108px; height: 108px;
+    border-radius: 50%;
+    border: 3px solid var(--stamp-red);
+    color: var(--stamp-red);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transform: rotate(-8deg);
+    font-family:"Zen Old Mincho", serif;
+    flex-shrink: 0;
+    position: relative;
+    opacity: 0;
+    animation: stampIn .35s ease-out .1s forwards;
+  }
+  .stamp::before{
+    content:"";
+    position:absolute; inset: 6px;
+    border: 1px solid var(--stamp-red);
+    border-radius: 50%;
+  }
+  .stamp .big{ font-size: 30px; font-weight: 700; line-height:1.2; letter-spacing:.05em; }
+  .stamp.blue{ border-color: var(--stamp-blue); color: var(--stamp-blue); }
+  .stamp.blue::before{ border-color: var(--stamp-blue); }
+  @keyframes stampIn{
+    from{ opacity:0; transform: rotate(-8deg) scale(1.4); }
+    to{ opacity:.92; transform: rotate(-8deg) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stamp{ animation: none; opacity:.92; }
+  }
+  .verdict-text{ font-size: 13.5px; color: var(--ink-soft); }
+  .verdict-text b{ color: var(--ink); font-size: 15px; }
+  .verdict-lead{ margin: 0 0 2px; }
+  .verdict-headline{ margin: 0 0 18px; font-size: 13.5px; line-height:1.6; }
+  .verdict-headline b{
+    display: block;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: .01em;
+    margin: 4px 0 2px;
+  }
+  .compare-rows{ margin-bottom: 16px; }
+  .compare-row{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--line);
+  }
+  .compare-row span:first-child{
+    font-family:"Zen Kaku Gothic New", sans-serif;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .compare-row span:last-child{
+    font-family:"Roboto Mono", monospace;
+    color: var(--ink);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .verdict-hint{ margin: 0; }
+
+  .notice{
+    margin-top: 22px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 1px dashed var(--line);
+    border-radius: 2px;
+    padding: 14px 16px;
+  }
+  .notice p{ margin: 0 0 6px; }
+  .notice p:last-child{ margin-bottom:0; }
+
+  @media (max-width: 480px){
+    .field-row, .custom-fields{ grid-template-columns: 1fr; }
+    .verdict{ flex-direction: column; text-align:center; }
+  }
+
+  /* ---- site header ---- */
+  .site-header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding: 4px 2px 18px;
+    font-family:"Roboto Mono", monospace;
+    font-size: 12px;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+  }
+  .site-header .brand{
+    font-family:"Zen Old Mincho", serif;
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: .04em;
+  }
+
+  /* ---- article ---- */
+  .article{ padding: 4px 2px; }
+  .article h1{
+    font-family:"Zen Old Mincho", serif;
+    font-size: clamp(21px, 5vw, 28px);
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+  .article .lead{
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+  .article-section{ margin-top: 34px; }
+  .article-section h2{
+    font-family:"Zen Old Mincho", serif;
+    font-size: 18px;
+    color: var(--ink);
+    border-left: 3px solid var(--gold);
+    padding-left: 10px;
+    margin: 0 0 14px;
+  }
+  .article-section h3{
+    font-family:"Zen Kaku Gothic New", sans-serif;
+    font-size: 14.5px;
+    color: var(--ink);
+    margin: 18px 0 8px;
+  }
+  .article-section p{
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+  }
+  .article-section ul{
+    margin: 0 0 12px;
+    padding-left: 1.3em;
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+  }
+  .article-section li{ margin-bottom: 4px; }
+
+  .ad-note{
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: #F7F0DE;
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    padding: 18px 20px;
+    margin: 22px 0;
+  }
+  .ad-note .pr-badge{
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--stamp-red);
+    color: var(--stamp-red);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family:"Zen Old Mincho", serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: normal;
+    transform: rotate(-8deg);
+  }
+  .ad-note p{
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .ad-note a{ color: var(--stamp-blue); font-weight: 500; }
+
+  .faq-item{
+    border-bottom: 1px dotted var(--line);
+    padding: 16px 0;
+  }
+  .faq-item:first-child{ padding-top: 0; }
+  .faq-q{
+    display:flex;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .faq-q .qa-mark{
+    font-family:"Roboto Mono", monospace;
+    color: var(--gold);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .faq-a{
+    display:flex;
+    gap: 10px;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+  }
+  .faq-a .qa-mark{
+    font-family:"Roboto Mono", monospace;
+    color: var(--stamp-blue);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .howto-list{
+    counter-reset: howto;
+    padding: 0;
+    margin: 0 0 12px;
+    list-style: none;
+  }
+  .howto-list li{
+    counter-increment: howto;
+    position: relative;
+    padding-left: 34px;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+  }
+  .howto-list li::before{
+    content: counter(howto);
+    position: absolute;
+    left: 0; top: 0;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--paper-deep);
+    color: var(--ink);
+    font-family:"Roboto Mono", monospace;
+    font-weight: 700;
+    font-size: 12px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .howto-list b{ color: var(--ink); }
+
+  .site-footer{
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+  .site-footer .updated{
+    font-family:"Roboto Mono", monospace;
+    font-size: 10px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .site-footer a{ color: var(--stamp-blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="site-header">
+    <a href="/"><span class="brand">tsucho-lab</span></a>
+    <span>住宅ローン通帳</span>
+    <a href="/mycar-loan.html" style="margin-left:auto; color:var(--stamp-blue); text-decoration:none;">マイカーローン通帳 →</a>
+  </div>
+
+  <div class="article">
+    <h1>変動金利、このまま上がったら住宅ローンはどうなる?</h1>
+    <p class="lead">
+      2024年以降、日本でも政策金利の引き上げが続き、「変動金利で組んだけれど、この先が不安」という声をよく聞くようになりました。銀行の公式サイトにあるシミュレーターは、自社の金利でしか試算できませんし、当然ながら「今のうちに固定に変えた方がいいですよ」とは教えてくれません。
+    </p>
+    <p class="lead">
+      このツールは、固定金利と変動金利を、複数の利上げシナリオで横並びに比較できる無料のシミュレーターです。多くの銀行が採用している「5年ルール・125%ルール」による返済額の緩和措置や、それによって発生しうる「未払利息」まで含めて試算できるのが特徴です。数値を入力して、下にスクロールするとすぐに結果が確認できます。
+    </p>
+  </div>
+
+  <div class="cover">
+    <div class="eyebrow">Housing Loan Simulation</div>
+    <h1>住宅ローン通帳</h1>
+    <p class="sub">固定金利 と 変動金利(利上げ想定) を積み立てのように見比べる</p>
+    <div class="meta">
+      <span id="issueDate">発行日 —</span>
+      <span>口座番号 SIM-0001</span>
+    </div>
+  </div>
+
+  <section class="card">
+    <details open>
+      <summary class="details-summary">
+        <span>借入条件</span>
+        <span class="details-summary-line"></span>
+        <span class="details-chevron">▸</span>
+      </summary>
+      <div class="details-body">
+        <div class="field-row">
+          <div class="field">
+            <label for="principal">借入額</label>
+            <div class="input-line">
+              <input type="number" inputmode="numeric" id="principal" value="4000" min="100" step="10">
+              <span class="unit">万円</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="term">返済期間</label>
+            <div class="input-line">
+              <input type="number" inputmode="numeric" id="term" value="35" min="5" max="50" step="1">
+              <span class="unit">年</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="variableRate">変動金利(当初)</label>
+            <div class="input-line">
+              <input type="number" inputmode="decimal" id="variableRate" value="0.945" min="0" step="0.05">
+              <span class="unit">%</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="fixedRate">固定金利(全期間)</label>
+            <div class="input-line">
+              <input type="number" inputmode="decimal" id="fixedRate" value="3.29" min="0" step="0.05">
+              <span class="unit">%</span>
+            </div>
+          </div>
+        </div>
+        <div class="rule-note" style="margin-top:14px; margin-bottom:0;">
+          この「固定」は、借入から完済まで金利が一切変わらない<b>全期間固定金利(フラット35など)</b>として計算しています。銀行の「10年固定」は当初10年だけこの金利が適用され、11年目以降は別の金利に切り替わるため、10年固定の金利をここに入れると11年目以降の変動リスクが反映されない、やや楽観的な試算になる点にご注意ください。下の「銀行金利比較」で行をタップすると金利が反映されます。
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <details open>
+      <summary class="details-summary">
+        <span>銀行金利比較</span>
+        <span class="details-summary-line"></span>
+        <span class="details-chevron">▸</span>
+      </summary>
+      <div class="details-body">
+        <div class="scroll-hint">→ 横にスクロールできます</div>
+        <div class="bank-table-wrap">
+          <table class="bank-table">
+            <thead>
+              <tr>
+                <th>銀行・商品</th>
+                <th>変動金利</th>
+                <th>固定金利</th>
+                <th>月々(変動)</th>
+                <th>月々(固定)</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="bankTableBody"></tbody>
+          </table>
+        </div>
+        <p class="source-note">
+          表示金利は各行公式サイト・住宅金融支援機構が示す代表的な優遇条件下での年利です(2026年8月時点)。給与振込や自己資金割合などの条件により、実際に適用される金利は異なります。<br>
+          <b>ご注意:</b> メガバンク・ネット銀行の「固定金利」は<b>当初10年間のみ</b>の金利で、11年目以降は別の金利に切り替わります。フラット35は<b>完済まで金利が変わらない</b>ため、上のシミュレーターの「固定」により正確に対応するのはフラット35です。10年固定の金利を使う場合、11年目以降の試算はやや楽観的になる点にご留意ください。<br>
+          「公式サイトを見る」は各行の情報ページへの案内リンクで、広告(PR)ではありません。
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <details open>
+      <summary class="details-summary">
+        <span>利上げシナリオ</span>
+        <span class="details-summary-line"></span>
+        <span class="details-chevron">▸</span>
+      </summary>
+      <div class="details-body">
+        <div class="scenario-group" role="group" aria-label="利上げシナリオを選択">
+          <button class="scenario-btn" data-scenario="optimistic" aria-pressed="false">楽観</button>
+          <button class="scenario-btn" data-scenario="neutral" aria-pressed="true">中立</button>
+          <button class="scenario-btn" data-scenario="pessimistic" aria-pressed="false">悲観</button>
+          <button class="scenario-btn" data-scenario="custom" aria-pressed="false">カスタム</button>
+        </div>
+        <div class="scenario-desc" id="scenarioDesc"></div>
+        <div class="custom-fields" id="customFields">
+          <div class="field">
+            <label for="customYear">上昇が始まる時期</label>
+            <div class="input-line">
+              <input type="number" inputmode="numeric" id="customYear" value="5" min="1" step="1">
+              <span class="unit">年後</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="customHike">上昇幅(累計)</label>
+            <div class="input-line">
+              <input type="number" inputmode="decimal" id="customHike" value="1.0" min="0" step="0.1">
+              <span class="unit">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <details id="advancedDetails">
+      <summary class="details-summary">
+        <span>詳細オプション(ボーナス払い、繰り上げ返済)</span>
+        <span class="details-summary-line"></span>
+        <span class="active-pill" id="advancedBadge">設定あり</span>
+        <span class="details-chevron">▸</span>
+      </summary>
+      <div class="details-body">
+        <div class="rule-note">
+          <b>ボーナス払い</b>:半年ごと(年2回)に、月々の返済に加えてまとまった金額を上乗せして返済する場合の効果を試算します。0円のままならボーナス払いなしとして計算されます。固定・変動どちらのシミュレーションにも同じ条件で適用されます。
+        </div>
+        <div class="field-row">
+          <div class="field" style="border-bottom:none;">
+            <label for="bonusAmount">半年ごとの追加返済額</label>
+            <div class="input-line">
+              <input type="number" inputmode="decimal" id="bonusAmount" value="0" min="0" step="1">
+              <span class="unit">万円 / 回</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="details-divider"></div>
+
+        <div class="rule-note">
+          <b>繰り上げ返済</b>:指定した年に、まとまった金額を一括で繰り上げ返済した場合の効果を試算します。
+        </div>
+        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); cursor:pointer; margin-bottom:14px;">
+          <input type="checkbox" id="prepayEnabled" style="width:18px; height:18px; accent-color: var(--stamp-blue);">
+          まとまった金額を一括で繰り上げ返済する
+        </label>
+        <div class="field-row custom-fields" id="prepayFields">
+          <div class="field">
+            <label for="prepayYear">実行時期</label>
+            <div class="input-line">
+              <input type="number" inputmode="numeric" id="prepayYear" value="10" min="1" step="1">
+              <span class="unit">年後</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="prepayAmountInput">繰り上げ返済額</label>
+            <div class="input-line">
+              <input type="number" inputmode="decimal" id="prepayAmountInput" value="200" min="0" step="10">
+              <span class="unit">万円</span>
+            </div>
+          </div>
+        </div>
+        <div class="scenario-group" id="prepayTypeGroup" style="display:none; margin-top:6px;" role="radiogroup" aria-label="繰り上げ返済のタイプ">
+          <label class="radio-pill">
+            <input type="radio" name="prepayType" value="shorten" checked>
+            期間短縮型
+          </label>
+          <label class="radio-pill">
+            <input type="radio" name="prepayType" value="reduce">
+            返済額軽減型
+          </label>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <details open>
+      <summary class="details-summary">
+        <span>5年ルール・125%ルール</span>
+        <span class="details-summary-line"></span>
+        <span class="details-chevron">▸</span>
+      </summary>
+      <div class="details-body">
+        <div class="rule-note">
+          多くの銀行の変動金利ローンには、<b>5年ルール</b>(返済額は5年ごとにしか見直されない)と<b>125%ルール</b>(見直し後の返済額は、それまでの1.25倍が上限)という緩和措置があります。金利が上がっても返済額の急増は抑えられますが、その代わり<b>利息の支払いが追いつかず「未払利息」が発生する</b>ことがあります。
+        </div>
+        <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); cursor:pointer;">
+          <input type="checkbox" id="applyRule" checked style="width:18px; height:18px; accent-color: var(--stamp-blue);">
+          5年ルール・125%ルールを適用して試算する
+        </label>
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <details open>
+      <summary class="details-summary">
+        <span>通帳明細(年次残高)</span>
+        <span class="details-summary-line"></span>
+        <span class="details-chevron">▸</span>
+      </summary>
+      <div class="details-body">
+        <div class="scroll-hint">→ 横にスクロールできます</div>
+        <div class="ledger-scroll">
+          <table class="ledger">
+            <thead>
+              <tr>
+                <th>年</th>
+                <th>固定 残高</th>
+                <th>変動 残高</th>
+                <th>変動 未払利息</th>
+                <th>差引</th>
+              </tr>
+            </thead>
+            <tbody id="ledgerBody" aria-live="polite"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <details open>
+      <summary class="details-summary">
+        <span>残高の推移</span>
+        <span class="details-summary-line"></span>
+        <span class="details-chevron">▸</span>
+      </summary>
+      <div class="details-body">
+        <div class="chart-legend">
+          <span><i class="swatch" style="background:var(--stamp-red)"></i>固定</span>
+          <span><i class="swatch" style="background:var(--stamp-blue)"></i>変動(シナリオ通り上昇)</span>
+          <span><i class="swatch area" style="background:var(--gold); opacity:.4;"></i>差額</span>
+        </div>
+        <svg id="chart" viewBox="0 0 640 240" style="width:100%; height:auto;" role="img" aria-label="固定金利と変動金利の残高推移を比較する折れ線グラフ"></svg>
+        <p class="chart-caption" id="chartCaption"></p>
+      </div>
+    </details>
+  </section>
+
+  <section class="card">
+    <div class="section-label">判定</div>
+    <div class="verdict" id="verdict" aria-live="polite"></div>
+  </section>
+
+  <div class="ad-note">
+    <span class="pr-badge">PR</span>
+    <p>試算結果は確認できましたか?借入の準備を進めるなら、<a href="https://px.a8.net/svt/ejp?a8mat=4B9ZDC+555UOQ+2PS+2BEEF6" target="_blank" rel="nofollow sponsored noopener">火災保険の一括見積もり</a>も早めに比較しておくと安心です。</p>
+  </div>
+  <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B9ZDC+555UOQ+2PS+2BEEF6" alt="">
+
+  <div class="notice">
+    <p>※ このシミュレーターは元利均等返済を前提とした簡易試算です。「固定」は完済まで金利が変わらない全期間固定金利(フラット35など)として計算しており、当初10年だけ金利が固定される「10年固定」とは11年目以降の扱いが異なります。金利は年2回見直されるのが一般的ですが、変動側はここでは単純化してシナリオごとに1回だけ変化するものとして計算しています。また、金融機関によっては5年ルール・125%ルールを採用していない場合や、未払利息の扱いが異なる場合があります。ボーナス払いは「半年ごとに元金へ追加返済する」形で簡略化しており、実際の金融機関の元金分割方式とは計算方法が異なります。実際の返済額とは差が生じます。</p>
+    <p>※ 将来の金利動向を保証するものではありません。特定の金融商品の推奨や投資助言を目的としたものではないため、実際の借入判断は金融機関へのご確認のうえ、ご自身の責任で行ってください。</p>
+  </div>
+
+  <div class="article">
+
+    <div class="article-section">
+      <h2>使い方</h2>
+      <ol class="howto-list">
+        <li><b>借入条件を入力する</b>:借入額・返済期間・金利を入力します。金利が分からない場合は、下の「銀行金利比較」から気になる銀行の行をタップすると自動で反映されます。</li>
+        <li><b>利上げシナリオを選ぶ</b>:楽観・中立・悲観の3パターン、または自分で「何年後に何%上がるか」を指定するカスタムシナリオから選びます。</li>
+        <li><b>判定を確認する</b>:一番下の「判定」に、固定と変動どちらが有利か、総利息の差がいくらかが表示されます。数値を変えながら、結果がどこで逆転するかを探してみてください。</li>
+      </ol>
+    </div>
+
+    <div class="article-section">
+      <h2>知っておきたい用語</h2>
+
+      <h3>5年ルール・125%ルールとは</h3>
+      <p>
+        多くの銀行の変動金利ローンに採用されている緩和措置です。<b>5年ルール</b>は、市場金利が変動しても毎月の返済額は5年ごとにしか見直されない、というルール。<b>125%ルール</b>は、5年後に返済額が見直される際も、それまでの返済額の1.25倍を超えては上がらない、というルールです。
+      </p>
+      <p>
+        急激な負担増を抑えられる一方で、金利上昇分に返済額が追いつかず、支払いきれなかった利息が「未払利息」として繰り越され、完済時にまとめて精算が必要になることがあります。このシミュレーターでは、この未払利息の発生も試算に含めています。
+      </p>
+
+      <h3>フラット35と10年固定の違い</h3>
+      <p>
+        「固定金利」とひとくちに言っても、実は2種類あります。<b>フラット35</b>(住宅金融支援機構取り扱い)は、借入から完済まで金利が一切変わらない「全期間固定金利」です。一方、銀行の「10年固定」は、最初の10年だけ金利が固定され、11年目以降は別の金利に切り替わります。
+      </p>
+      <p>
+        つまり「10年固定だから完済まで安心」というわけではなく、11年目以降は変動金利と同じように金利変動のリスクを引き受けることになります。長期の金利変動リスクを完全に避けたい場合は、フラット35のような全期間固定金利を検討する価値があります。
+      </p>
+
+      <div class="ad-note">
+        <span class="pr-badge">PR</span>
+        <p>住宅ローンを組む際は、多くの金融機関で火災保険への加入が必須条件になります。<a href="https://px.a8.net/svt/ejp?a8mat=4B9ZDC+555UOQ+2PS+2BEEF6" target="_blank" rel="nofollow sponsored noopener">火災保険の一括見積もりサービス</a>を使えば、複数社の条件を比較しながら選べます。</p>
+      </div>
+      <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=4B9ZDC+555UOQ+2PS+2BEEF6" alt="">
+    </div>
+
+    <div class="article-section">
+      <h2>よくある質問</h2>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="qa-mark">Q</span><span>変動金利と固定金利、結局どっちがいいの?</span></div>
+        <div class="faq-a"><span class="qa-mark">A</span><span>一概にどちらが正解とは言えません。将来の金利がいつ・どのくらい上がるかは誰にも予測できないためです。楽観・中立・悲観のシナリオを切り替えて試算し、自分がどこまでの負担増なら許容できるかで判断するのが現実的です。</span></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="qa-mark">Q</span><span>このシミュレーターは正確ですか?</span></div>
+        <div class="faq-a"><span class="qa-mark">A</span><span>元利均等返済を前提とした簡易試算であり、実際の金融機関の計算式や個別の優遇条件とは差が生じます。あくまで「傾向をつかむための試算」としてご利用ください。実際の借入条件は金融機関に個別にご確認ください。</span></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="qa-mark">Q</span><span>ボーナス払いや繰り上げ返済も試算できますか?</span></div>
+        <div class="faq-a"><span class="qa-mark">A</span><span>できます。「詳細オプション」を開くと、半年ごとのボーナス払いや、指定した年での一括繰り上げ返済(期間短縮型・返済額軽減型)の効果を試算できます。</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="site-footer">
+    <div class="updated">最終更新:2026年8月(銀行金利データの確認基準日)</div>
+    <p><b style="color:var(--ink);">本サイトはアフィリエイト広告を利用しています(PR)。</b>紹介する情報は公正な内容となるよう努めていますが、リンク先での申し込み・成約により、当サイトが成果報酬を得る場合があります。</p>
+    <p>本サイトは個人が運営する情報提供サイトです。特定の金融機関・金融商品を推奨するものではなく、投資助言や金融アドバイスを目的としたものでもありません。掲載内容の正確性には配慮していますが、実際の借入条件・金利は必ず各金融機関の公式情報でご確認ください。</p>
+    <p><a href="/privacy.html">プライバシーポリシー・お問い合わせ</a> ・ <a href="/">tsucho-lab トップへ</a> ・ <a href="/mycar-loan.html">マイカーローン通帳</a></p>
+    <p>© 2026 tsucho-lab</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+
+  const scenarios = {
+    optimistic: { label: "楽観", desc: "利上げはほぼ起きない、または小幅にとどまるシナリオ。上昇幅 0.0%。", year: 5, hike: 0.0 },
+    neutral:    { label: "中立", desc: "5年後を目安に、緩やかに合計 1.0% 程度金利が上昇するシナリオ。", year: 5, hike: 1.0 },
+    pessimistic:{ label: "悲観", desc: "3年後から、合計 2.0% 程度まで金利が上昇するシナリオ。", year: 3, hike: 2.0 },
+    custom:     { label: "カスタム", desc: "上昇が始まる時期と上昇幅を自由に指定できます。", year: 5, hike: 1.0 }
+  };
+  let currentScenario = "neutral";
+
+  $("issueDate").textContent = "発行日 " + new Date().toLocaleDateString("ja-JP", {year:"numeric", month:"2-digit", day:"2-digit"}).replace(/\//g,".");
+
+  function monthlyPayment(principal, annualRatePercent, months){
+    const r = annualRatePercent / 100 / 12;
+    if (r === 0) return principal / months;
+    const f = Math.pow(1+r, months);
+    return principal * r * f / (f - 1);
+  }
+
+  // rateChangeMonth/newRatePercent: single-step hike used for the scenario.
+  // applyRule: 変動ローンに 5年ルール(返済額は5年ごとにしか改定しない)と
+  //            125%ルール(改定後の返済額は直前の1.25倍が上限)を適用するかどうか。
+  //            固定ローンでは金利が変わらないためこのルールは意味を持たない(呼び出し側で false 相当)。
+  // bonusAmount: 半年(6ヶ月)ごとに上乗せする追加返済額(万円)。0なら通常返済のみ。
+  // prepay: { atMonth, amount, type } 一括繰り上げ返済。type は 'shorten'(期間短縮型) か 'reduce'(返済額軽減型)。
+  function simulate(principal, initialRatePercent, termYears, rateChangeMonth, newRatePercent, applyRule, bonusAmount, prepay){
+    const monthsTotal = termYears * 12;
+    let balance = principal;
+    let rate = initialRatePercent;
+    let payment = monthlyPayment(balance, rate, monthsTotal);
+    const yearly = [];
+    let cumulativeInterest = 0; // 実際に発生した利息(未払分を含む)の累計
+    let unpaidInterest = 0;     // 返済額でまかないきれず繰り越された利息の累計
+    let payoffMonth = null;
+
+    for (let m = 1; m <= monthsTotal; m++){
+      // 金利そのものはシナリオ通りのタイミングで変わる(銀行は年2回見直しが一般的だが、ここでは単純化して1回のステップ変化とする)
+      if (rateChangeMonth && m === rateChangeMonth){
+        rate = newRatePercent;
+      }
+
+      if (applyRule){
+        // 5年ルール: 返済額は5年ごと(61ヶ月目、121ヶ月目…)にしか改定しない
+        if (m > 1 && m % 60 === 1){
+          const remainingMonths = monthsTotal - m + 1;
+          const recalculated = monthlyPayment(balance, rate, remainingMonths);
+          // 125%ルール: 新しい返済額は、それまでの返済額の1.25倍を上限とする
+          payment = Math.min(recalculated, payment * 1.25);
+        }
+      } else if (rateChangeMonth && m === rateChangeMonth){
+        // ルールを適用しない場合は、金利が変わった瞬間に返済額も即座に再計算する
+        const remainingMonths = monthsTotal - m + 1;
+        payment = monthlyPayment(balance, rate, remainingMonths);
+      }
+
+      const interestPortion = balance * (rate/100/12);
+      let principalPortion = payment - interestPortion;
+
+      if (principalPortion < 0){
+        // 返済額よりも利息の方が大きい → 元金は減らず、差額は「未払利息」として繰り越し
+        unpaidInterest += -principalPortion;
+        principalPortion = 0;
+      }
+      if (principalPortion > balance) principalPortion = balance;
+
+      balance = Math.max(0, balance - principalPortion);
+      cumulativeInterest += interestPortion;
+
+      // ボーナス払い: 半年ごとに追加で元金を返済(利息はすでに月々の計算で織り込み済み)
+      if (bonusAmount > 0 && m % 6 === 0 && balance > 0){
+        balance = Math.max(0, balance - Math.min(bonusAmount, balance));
+      }
+
+      // 繰り上げ返済(一括)
+      if (prepay && m === prepay.atMonth && balance > 0){
+        balance = Math.max(0, balance - Math.min(prepay.amount, balance));
+        if (prepay.type === "reduce" && balance > 0){
+          const remainingMonths = monthsTotal - m;
+          if (remainingMonths > 0) payment = monthlyPayment(balance, rate, remainingMonths);
+        }
+        // 期間短縮型は返済額を据え置き、残った期間の中で早く完済させる
+      }
+
+      if (balance <= 0.0001 && payoffMonth === null){
+        payoffMonth = m;
+      }
+
+      if (m % 12 === 0 || m === monthsTotal || payoffMonth === m){
+        yearly.push({
+          year: Math.ceil(m/12),
+          balance: Math.max(0, balance),
+          cumulativeInterest: cumulativeInterest,
+          unpaidInterest: unpaidInterest,
+          isEventYear: rateChangeMonth ? Math.ceil(rateChangeMonth/12) === Math.ceil(m/12) : false,
+          isPayoffYear: payoffMonth === m
+        });
+      }
+      if (payoffMonth !== null) break; // 完済したのでそれ以降のシミュレーションは不要
+    }
+    return yearly;
+  }
+
+  // schedule配列の年インデックス(0始まり)に対応する記録を返す。
+  // 完済で配列が途中で終わっている場合は、残高0の状態が続くものとして補完する。
+  function getYearRecord(schedule, yearIndex){
+    if (yearIndex < schedule.length) return schedule[yearIndex];
+    const last = schedule[schedule.length - 1];
+    return {
+      year: yearIndex + 1,
+      balance: 0,
+      cumulativeInterest: last.cumulativeInterest,
+      unpaidInterest: last.unpaidInterest,
+      isEventYear: false,
+      isPayoffYear: false
+    };
+  }
+
+  function fmt(man){
+    return Math.round(man).toLocaleString("ja-JP");
+  }
+
+  // 2026年8月時点の代表的な金利水準(各行公式サイト・住宅金融支援機構掲載の優遇条件下での年利)。
+  // メガバンク3行・ネット銀行3行(変動金利が低い順)・フラット35(全期間固定、融資率9割以下)を掲載。
+  const bankRates = [
+    { name: "三菱UFJ銀行",   type: "mega", variable: 0.945, fixed10: 3.590, url: "https://www.bk.mufg.jp/kariru/jutaku/index.html" },
+    { name: "みずほ銀行",     type: "mega", variable: 1.025, fixed10: 3.350, url: "https://www.mizuhobank.co.jp/loan_housing/index.html" },
+    { name: "三井住友銀行",   type: "mega", variable: 1.275, fixed10: 3.650, url: "https://www.smbc.co.jp/kojin/jutaku_loan/" },
+    { name: "SBI新生銀行",    type: "net",  variable: 1.060, fixed10: 3.050, url: "https://www.sbishinseibank.co.jp/retail/housing/" },
+    { name: "auじぶん銀行",   type: "net",  variable: 1.134, fixed10: 3.180, url: "https://www.jibunbank.co.jp/products/homeloan/" },
+    { name: "PayPay銀行",     type: "net",  variable: 1.330, fixed10: 2.870, url: "https://www.paypay-bank.co.jp/mortgage/index.html" },
+    { name: "フラット35(融資率9割以下)", type: "flat", variable: null, fixed10: 3.290, url: "https://www.flat35.com/" }
+  ];
+  const typeLabel = { mega: "メガバンク", net: "ネット銀行", flat: "全期間固定" };
+  let activeBankName = null;
+
+  function renderBankTable(){
+    const principal = parseFloat($("principal").value) || 0;
+    const term = parseInt($("term").value) || 1;
+    const months = term * 12;
+    const tbody = $("bankTableBody");
+    tbody.innerHTML = "";
+
+    bankRates.forEach(bank => {
+      const payV = bank.variable !== null ? monthlyPayment(principal, bank.variable, months) : null;
+      const payF = monthlyPayment(principal, bank.fixed10, months);
+      const tr = document.createElement("tr");
+      tr.tabIndex = 0;
+      tr.setAttribute("role", "button");
+      tr.setAttribute("aria-label", `${bank.name}の金利をこのシミュレーションに反映する`);
+      if (bank.name === activeBankName) tr.classList.add("active-row");
+      tr.innerHTML = `
+        <td>
+          <span class="bank-name">${bank.name}<span class="type-badge ${bank.type}">${typeLabel[bank.type]}</span></span>
+          <a class="official-link" href="${bank.url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">公式サイトを見る ↗</a>
+        </td>
+        <td>${bank.variable !== null ? `年${bank.variable.toFixed(3)}%` : "—"}</td>
+        <td>年${bank.fixed10.toFixed(3)}%</td>
+        <td>${payV !== null ? `${Math.round(payV/10000*10)/10}万円` : "—"}</td>
+        <td>${Math.round(payF/10000*10)/10}万円</td>
+        <td><button type="button" class="use-btn">${bank.name === activeBankName ? "反映中" : "使う"}</button></td>
+      `;
+      const apply = () => {
+        activeBankName = bank.name;
+        if (bank.variable !== null) $("variableRate").value = bank.variable;
+        $("fixedRate").value = bank.fixed10;
+        render();
+      };
+      tr.addEventListener("click", apply);
+      tr.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); apply(); }
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  function render(){
+    const principal = parseFloat($("principal").value) || 0;
+    const term = parseInt($("term").value) || 1;
+    const vRate = parseFloat($("variableRate").value) || 0;
+    const fRate = parseFloat($("fixedRate").value) || 0;
+
+    let sc = scenarios[currentScenario];
+    let hikeYear = sc.year, hikeAmount = sc.hike;
+    if (currentScenario === "custom"){
+      hikeYear = parseFloat($("customYear").value) || 0;
+      hikeAmount = parseFloat($("customHike").value) || 0;
+    }
+    const changeMonth = hikeAmount > 0 ? Math.round(hikeYear * 12) : null;
+    const newVRate = vRate + hikeAmount;
+    const applyRule = $("applyRule").checked;
+    const bonusAmount = parseFloat($("bonusAmount").value) || 0;
+
+    const prepayEnabled = $("prepayEnabled").checked;
+    const prepayYear = parseFloat($("prepayYear").value) || 0;
+    const prepayAmount = parseFloat($("prepayAmountInput").value) || 0;
+    const prepayType = document.querySelector('input[name="prepayType"]:checked').value;
+    const prepay = (prepayEnabled && prepayAmount > 0)
+      ? { atMonth: Math.max(1, Math.round(prepayYear * 12)), amount: prepayAmount, type: prepayType }
+      : null;
+
+    $("advancedBadge").classList.toggle("show", bonusAmount > 0 || !!prepay);
+
+    const fixedSchedule = simulate(principal, fRate, term, null, null, false, bonusAmount, prepay);
+    const variableSchedule = simulate(principal, vRate, term, changeMonth, newVRate, applyRule, bonusAmount, prepay);
+
+    // ledger table(完済で配列が短い場合は残高0として補完し、当初期間分まで表示する)
+    const tbody = $("ledgerBody");
+    tbody.innerHTML = "";
+    for (let i = 0; i < term; i++){
+      const f = getYearRecord(fixedSchedule, i);
+      const v = getYearRecord(variableSchedule, i);
+      const diff = v.balance - f.balance; // positive = variable owes more
+      const tr = document.createElement("tr");
+      if (v.isEventYear) tr.className = "event";
+      else if (f.isPayoffYear || v.isPayoffYear) tr.className = "payoff";
+      const diffClass = diff > 0.5 ? "diff-plus" : (diff < -0.5 ? "diff-minus" : "");
+      let label = `${f.year}年目`;
+      if (v.isEventYear) label += " ★金利変更";
+      if (f.isPayoffYear && v.isPayoffYear) label += " ●完済(両方)";
+      else if (f.isPayoffYear) label += " ●完済(固定)";
+      else if (v.isPayoffYear) label += " ●完済(変動)";
+      tr.innerHTML = `
+        <td>${label}</td>
+        <td>${fmt(f.balance)}</td>
+        <td>${fmt(v.balance)}</td>
+        <td class="${v.unpaidInterest > 0 ? 'unpaid' : ''}">${v.unpaidInterest > 0 ? fmt(v.unpaidInterest) : "—"}</td>
+        <td class="${diffClass}">${diff >= 0 ? "+" : ""}${fmt(diff)}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    // chart(両者を同じ年数分の配列に揃えてから描画)
+    const fixedForChart = Array.from({length: term}, (_, i) => getYearRecord(fixedSchedule, i));
+    const variableForChart = Array.from({length: term}, (_, i) => getYearRecord(variableSchedule, i));
+    drawChart(fixedForChart, variableForChart, principal);
+
+    // verdict
+    const lastFixed = fixedSchedule[fixedSchedule.length-1];
+    const lastVariable = variableSchedule[variableSchedule.length-1];
+    const totalFixedInterest = lastFixed.cumulativeInterest;
+    const totalVariableInterest = lastVariable.cumulativeInterest;
+    const gap = Math.abs(totalFixedInterest - totalVariableInterest);
+    const variableWins = totalVariableInterest < totalFixedInterest;
+    const finalUnpaid = lastVariable.unpaidInterest;
+
+    const verdictEl = $("verdict");
+    let extraNotes = "";
+    if (finalUnpaid > 0.5){
+      extraNotes += `<div class="warn-badge">⚠ 未払利息が完済時点で約${fmt(finalUnpaid)}万円残る見込みです。多くの銀行ではこれを完済時に一括精算する必要があります。</div>`;
+    }
+    if (prepay){
+      const fixedPayoffYears = fixedSchedule.length;
+      const variablePayoffYears = variableSchedule.length;
+      extraNotes += `<div class="warn-badge" style="color:var(--stamp-blue); background:#E7EEF3; border-color:var(--stamp-blue);">繰り上げ返済の効果:固定は${fixedPayoffYears}年目、変動は${variablePayoffYears}年目に明細が終了(完済、または今回の試算期間の終わり)しています。</div>`;
+    }
+
+    verdictEl.innerHTML = `
+      <div class="stamp ${variableWins ? 'blue' : ''}">
+        <span class="big">${variableWins ? "変動" : "固定"}</span>
+      </div>
+      <div class="verdict-text">
+        <p class="verdict-lead">このシナリオでの総利息の差は</p>
+        <p class="verdict-headline">およそ<b style="color:${variableWins ? 'var(--stamp-blue)' : 'var(--stamp-red)'};">${fmt(gap)}万円</b>です。</p>
+        <div class="compare-rows">
+          <div class="compare-row"><span>固定金利の総利息</span><span>約${fmt(totalFixedInterest)}万円</span></div>
+          <div class="compare-row"><span>変動金利の総利息</span><span>約${fmt(totalVariableInterest)}万円</span></div>
+        </div>
+        <p class="verdict-hint">金利が変わるタイミングと上げ幅を変えると結果は逆転することがあります。上の入力を動かして、どこが分岐点かを探してみてください。</p>
+        ${extraNotes}
+      </div>
+    `;
+
+    renderBankTable();
+  }
+
+  function drawChart(fixed, variable, principal){
+    const svg = $("chart");
+    const W = 640, H = 240, padL = 46, padR = 12, padT = 14, padB = 24;
+    const maxY = principal;
+    const n = fixed.length;
+    const x = (i) => padL + (i/(n-1)) * (W - padL - padR);
+    const y = (v) => padT + (1 - v/maxY) * (H - padT - padB);
+
+    const pathFor = (data) => data.map((d,i) => `${i===0?'M':'L'}${x(i).toFixed(1)},${y(d.balance).toFixed(1)}`).join(" ");
+
+    // 固定・変動の残高の差を帯として塗りつぶし、差を視覚的に強調する
+    const topPoints = fixed.map((d,i) => `${x(i).toFixed(1)},${y(Math.max(fixed[i].balance, variable[i].balance)).toFixed(1)}`);
+    const bottomPoints = fixed.map((d,i) => `${x(i).toFixed(1)},${y(Math.min(fixed[i].balance, variable[i].balance)).toFixed(1)}`).reverse();
+    const bandPath = `M${topPoints.join(" L")} L${bottomPoints.join(" L")} Z`;
+
+    let gridLines = "";
+    for (let g = 0; g <= 4; g++){
+      const gy = padT + (g/4) * (H - padT - padB);
+      const val = Math.round(maxY * (1 - g/4));
+      gridLines += `<line x1="${padL}" y1="${gy}" x2="${W-padR}" y2="${gy}" stroke="var(--line)" stroke-width="1"/>`;
+      gridLines += `<text x="${padL-6}" y="${gy+3}" text-anchor="end" font-size="9" font-family="Roboto Mono, monospace" fill="var(--ink-soft)">${val}</text>`;
+    }
+
+    let yearTicks = "";
+    const tickEvery = Math.max(1, Math.round(n/6));
+    for (let i = 0; i < n; i += tickEvery){
+      yearTicks += `<text x="${x(i)}" y="${H-6}" text-anchor="middle" font-size="9" font-family="Roboto Mono, monospace" fill="var(--ink-soft)">${fixed[i].year}年</text>`;
+    }
+
+    svg.innerHTML = `
+      ${gridLines}
+      <path d="${bandPath}" fill="var(--gold)" opacity="0.22" stroke="none"/>
+      ${yearTicks}
+      <path d="${pathFor(fixed)}" fill="none" stroke="var(--stamp-red)" stroke-width="2.5"/>
+      <path d="${pathFor(variable)}" fill="none" stroke="var(--stamp-blue)" stroke-width="2.5"/>
+    `;
+
+    // 差が最も大きい年とその金額をキャプションに表示
+    let maxDiff = 0, maxDiffYear = fixed[0] ? fixed[0].year : null;
+    fixed.forEach((f, i) => {
+      const diff = variable[i].balance - f.balance;
+      if (Math.abs(diff) > Math.abs(maxDiff)){ maxDiff = diff; maxDiffYear = f.year; }
+    });
+    const captionEl = $("chartCaption");
+    if (captionEl){
+      if (Math.abs(maxDiff) < 0.5){
+        captionEl.textContent = "この試算では、固定と変動の残高差はほとんど生じていません。";
+      } else {
+        const leader = maxDiff > 0 ? "変動" : "固定";
+        captionEl.innerHTML = `残高の差が最も大きいのは<b>${maxDiffYear}年目</b>で、<b>${leader}の方が約${fmt(Math.abs(maxDiff))}万円多く残っています</b>(黄色の帯の部分)。`;
+      }
+    }
+  }
+
+  document.querySelectorAll(".scenario-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".scenario-btn").forEach(b => b.setAttribute("aria-pressed","false"));
+      btn.setAttribute("aria-pressed","true");
+      currentScenario = btn.dataset.scenario;
+      $("scenarioDesc").textContent = scenarios[currentScenario].desc;
+      $("customFields").classList.toggle("show", currentScenario === "custom");
+      render();
+    });
+  });
+
+  $("prepayEnabled").addEventListener("change", () => {
+    const show = $("prepayEnabled").checked;
+    $("prepayFields").classList.toggle("show", show);
+    $("prepayTypeGroup").style.display = show ? "flex" : "none";
+  });
+
+  document.querySelectorAll("input").forEach(inp => inp.addEventListener("input", render));
+
+  $("scenarioDesc").textContent = scenarios[currentScenario].desc;
+  render();
+})();
+</script>
+
+</body>
+</html>
