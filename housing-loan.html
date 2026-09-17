@@ -1092,6 +1092,16 @@
     return principal * r * f / (f - 1);
   }
 
+  // 今の返済額を据え置いたまま完済するのに必要な残り月数。
+  // 期間短縮型の繰り上げ返済で「完済予定月」を前倒しするために使う。
+  // 返済額が利息にも満たない場合は完済しないので null を返す。
+  function monthsToPayoff(balance, annualRatePercent, payment){
+    const r = annualRatePercent / 100 / 12;
+    if (r === 0) return Math.ceil(balance / payment);
+    if (payment <= balance * r) return null;
+    return Math.ceil(-Math.log(1 - balance * r / payment) / Math.log(1 + r));
+  }
+
   // rateChangeMonth/newRatePercent: single-step hike used for the scenario.
   // applyRule: 変動ローンに 5年ルール(返済額は5年ごとにしか改定しない)と
   //            125%ルール(改定後の返済額は直前の1.25倍が上限)を適用するかどうか。
@@ -1103,6 +1113,9 @@
     let balance = principal;
     let rate = initialRatePercent;
     let payment = monthlyPayment(balance, rate, monthsTotal);
+    // 完済予定月。期間短縮型の繰り上げ返済をすると前倒しされる。
+    // 返済額の再計算はこの horizon までを残り期間として行う(当初期間ではなく)。
+    let horizon = monthsTotal;
     const yearly = [];
     let cumulativeInterest = 0; // 実際に発生した利息(未払分を含む)の累計
     let unpaidInterest = 0;     // 返済額でまかないきれず繰り越された利息の累計
@@ -1117,14 +1130,14 @@
       if (applyRule){
         // 5年ルール: 返済額は5年ごと(61ヶ月目、121ヶ月目…)にしか改定しない
         if (m > 1 && m % 60 === 1){
-          const remainingMonths = monthsTotal - m + 1;
+          const remainingMonths = Math.max(1, horizon - m + 1);
           const recalculated = monthlyPayment(balance, rate, remainingMonths);
           // 125%ルール: 新しい返済額は、それまでの返済額の1.25倍を上限とする
           payment = Math.min(recalculated, payment * 1.25);
         }
       } else if (rateChangeMonth && m === rateChangeMonth){
         // ルールを適用しない場合は、金利が変わった瞬間に返済額も即座に再計算する
-        const remainingMonths = monthsTotal - m + 1;
+        const remainingMonths = Math.max(1, horizon - m + 1);
         payment = monthlyPayment(balance, rate, remainingMonths);
       }
 
@@ -1149,11 +1162,17 @@
       // 繰り上げ返済(一括)
       if (prepay && m === prepay.atMonth && balance > 0){
         balance = Math.max(0, balance - Math.min(prepay.amount, balance));
-        if (prepay.type === "reduce" && balance > 0){
-          const remainingMonths = monthsTotal - m;
-          if (remainingMonths > 0) payment = monthlyPayment(balance, rate, remainingMonths);
+        if (prepay.type === "reduce"){
+          // 返済額軽減型: 完済予定月は据え置いたまま、返済額を下げる
+          const remainingMonths = horizon - m;
+          if (balance > 0 && remainingMonths > 0) payment = monthlyPayment(balance, rate, remainingMonths);
+        } else {
+          // 期間短縮型: 返済額を据え置き、完済予定月を前倒しする。
+          // ここで horizon を更新しないと、次の5年ルール改定で当初期間まで
+          // 返済額が引き下げられ、短縮の効果が打ち消されてしまう。
+          const n = monthsToPayoff(balance, rate, payment);
+          if (n !== null) horizon = Math.min(monthsTotal, m + n);
         }
-        // 期間短縮型は返済額を据え置き、残った期間の中で早く完済させる
       }
 
       if (balance <= 0.0001 && payoffMonth === null){
